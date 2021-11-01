@@ -1,17 +1,19 @@
-const authorized = (req, res, next) => {
+const withAuth = (req, res, next) => {
     if (!req.session.loggedIn) {
-        res.redirect("/login");
-    } else {
+        res.redirect('/login');
+      } else {
         next();
     }
-}
+  };
 
-const isLogged = (req, res, next) => {
-    if (req.session.loggedIn) {
-        res.redirect("/");
-    } else {
-        next();
-    }
-};
+// const isLogged = (req, res, next) => {
+//     if (req.session.loggedIn) {
+//         res.redirect("/");
+//     } else {
+//         next();
+//     }
+// };
 
-module.exports = { authorized, isLogged }
+// module.exports = { withAuth,
+    //  isLogged
+    //  }
