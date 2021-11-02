@@ -3,13 +3,13 @@ const newFormHandler = async (event) => {
   event.preventDefault();
 
   const blog_name = document.querySelector('#project-name').value.trim();
-//   const needed_funding = document.querySelector('#project-funding').value.trim();
+//   const user_id = res.session.user_id
   const description = document.querySelector('#project-desc').value.trim();
 
   if (blog_name && description) {
-    const response = await fetch(`/api/blog`, {
+    const response = await fetch(`/api/dashboard`, {
       method: 'POST',
-      body: JSON.stringify({ blog_name, description,  }),
+      body: JSON.stringify({ blog_name, description, }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -27,7 +27,7 @@ const delButtonHandler = async (event) => {
   if (event.target.hasAttribute('data-id')) {
     const id = event.target.getAttribute('data-id');
 
-    const response = await fetch(`/api/blog/${id}`, {
+    const response = await fetch(`/api/dashboard/${id}`, {
       method: 'DELETE',
     });
 
