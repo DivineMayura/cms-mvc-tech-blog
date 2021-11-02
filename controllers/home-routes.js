@@ -1,86 +1,80 @@
 const router = require('express').Router();
 const { Comment, User, Blog } = require('../models');
-const withAuth = require('../utils/auth');
+// const withAuth = require('../utils/auth');
 
 router.get("/", async (req, res) => {
     try {
         const dbBlogData = await Blog.findAll({
-            attributes: ["id", "title", "body", "user_id"],
             include: [
                 {
                     model: User,
-                    as: "user_id",
-                    attributes: ["user_name"],
+                    attributes: ["name"]
                 }
             ]
         });
 
-        const allBlogs = dbBlogData.map((blogs) =>
-            blogs.get({ plain: true })
+        const blogs = dbBlogData.map((bloggies) =>
+            bloggies.get({ plain: true })
         );
 
         res.render("homepage", {
-            allBlogs,
-            loggedIn: req.session.loggedIn,
+            blogs,
+            // loggedIn: req.session.loggedIn,
         });
-
         // res.send("OKAY")
-        res.status(200).json(dbBlogData);
+        // res.status(200).json(dbBlogData);
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
 router.get("/blog/:id", async (req, res) => {
-    if (!req.session.loggedIn) {
+    if (req.session.loggedIn) {
         res.redirect('/login');
     } else {
         try {
             const dbBlogData = await Blog.findByPk(req.params.id, {
-                include: [
-                    {
-                        model: Comment,
-                        attributes: [
-                            "id",
-                            "content",
-                            "blog_id",
-                            "user_id"
-                        ],
-                    },
-                ],
+                include: [Comment]
             });
+
             const dataSet = dbBlogData.get({ plain: true });
-            res.render("blog", { dataSet, loggedIn: req.session.loggedIn });
+            // res.render("blog", { dataSet, loggedIn: req.session.loggedIn });
+            console.log(dataSet);
+
         } catch (err) {
             res.status(500).json(err);
         }
     }
 });
 
-router.get("/comment/:id", async (req, res) => {
+router.get('/dashboard', async (req, res) => {
     if (!req.session.loggedIn) {
         res.redirect('/login');
     } else {
         try {
+            // Find the logged in user based on the session ID
+            const userData = await User.findByPk(req.session.user_id, {
+                attributes: { exclude: ['password'] },
+                include: [{ model: Project }],
+            });
 
-            const dbCommentData = await Comment.findByPK(req.params.id);
+            const user = userData.get({ plain: true });
 
-            const com = dbCommentData.get({ plain: true });
-
-            res.render("comment", { com, loggedIn: req.session.loggedIn });
-
+            res.render('dashboard', {
+                ...user,
+                logged_in: true
+            });
         } catch (err) {
-            // console.log(err);
             res.status(500).json(err);
         }
     }
-    })
+});
 
 
 
 router.get("/login", async (req, res) => {
-    if (!req.session.logged_in) {
-        res.redirect("/homepage");
+    if (req.session.logged_in) {
+        res.redirect("/");
         return;
     }
     res.render("login");

@@ -32,6 +32,10 @@ Comment.init(
                 model: "user",
                 key: "id"
             }
+        },
+        commenter: {
+            type: DataTypes.STRING,
+
         }
     },
     {
