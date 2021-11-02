@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
 
         res.render("homepage", {
             blogs,
-            // loggedIn: req.session.loggedIn,
+            loggedIn: req.session.loggedIn,
         });
         // res.send("OKAY")
         // res.status(200).json(dbBlogData);
