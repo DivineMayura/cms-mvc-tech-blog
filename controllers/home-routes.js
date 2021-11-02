@@ -38,7 +38,7 @@ router.get("/blog/:id", async (req, res) => {
             });
 
             const dataSet = dbBlogData.get({ plain: true });
-            // res.render("blog", { dataSet, loggedIn: req.session.loggedIn });
+            res.render("comments", { comment });
             console.log(dataSet);
 
         } catch (err) {

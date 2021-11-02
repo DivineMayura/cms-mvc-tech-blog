@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const { Blog, User } = require('../../models');
+
 // let  = userData.id
+
 router.post("/", async (req, res) => {
     try {
         const buildABlog = await Blog.create({
@@ -9,14 +11,19 @@ router.post("/", async (req, res) => {
             user_id: req.session.user_id
         });
     
-          res.status(200).json(buildABlog);
+        //   res.status(200).json(buildABlog);
+        const blogs = buildABlog.map((bloggies) =>
+        bloggies.get({ plain: true })
+    );
+          res.render("dashboard", {
+              blogs
+          })
       } catch (err) {
         res.status(400).json(err);
       }
 });
 
 router.put('/:id', async (req, res) => {
-    // update a tag's name by its `id` value
     try {
       const blogUpdate = await Tag.update(
         { description: req.body.description },
