@@ -55,6 +55,10 @@ node server.js
 * [express](https://www.npmjs.com/package/express)
 * [mysql2](https://www.npmjs.com/package/mysql2)
 * [sequelize](https://www.npmjs.com/package/sequelize)
+* [express-handlebars](https://www.npmjs.com/package/express-handlebars)
+* [express-session](https://www.npmjs.com/package/express-session)
+* [bcrypt](https://www.npmjs.com/package/bcrypt)
+* [connect-session-sequelize](https://www.npmjs.com/package/connect-session-sequelize)
 
 ## Author 
   GitHub username: DivineMayura
