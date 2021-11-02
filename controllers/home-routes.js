@@ -55,14 +55,14 @@ router.get('/dashboard', async (req, res) => {
             // Find the logged in user based on the session ID
             const userData = await User.findByPk(req.session.user_id, {
                 attributes: { exclude: ['password'] },
-                include: [{ model: Project }],
+                include: [{ model: Blog }],
             });
 
             const user = userData.get({ plain: true });
 
             res.render('dashboard', {
                 ...user,
-                logged_in: true
+                loggedIn: true
             });
         } catch (err) {
             res.status(500).json(err);
@@ -73,7 +73,7 @@ router.get('/dashboard', async (req, res) => {
 
 
 router.get("/login", async (req, res) => {
-    if (req.session.logged_in) {
+    if (req.session.loggedIn) {
         res.redirect("/");
         return;
     }
