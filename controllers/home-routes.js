@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/blog/:id", async (req, res) => {
-    if (req.session.loggedIn) {
+    if (!req.session.loggedIn) {
         res.redirect('/login');
     } else {
         try {
